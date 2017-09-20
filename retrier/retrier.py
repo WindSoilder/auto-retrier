@@ -20,6 +20,7 @@ def auto_retry(url: str, receiver: str):
         logging.error('Connect to local smtp server failed '
                       'may be there is no smtp server here')
     else:
-        msg = set_message(receiver, receiver,
+        self_identify = 'auto-retrier@retrier.com'
+        msg = set_message(self_identify, receiver,
                           DEFAULT_SUBJECT, DEFAULT_CONTENT)
         smtp_server.send_message(msg)
