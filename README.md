@@ -7,3 +7,8 @@ There are some registration system in real world, user can register their exam o
 # How to use it
 1. Please ensure that your running machine have install SMTP service, and the port(25) it's not blocked by firewall.
 2. When running auto-retrier, the program will ask for url to fetch, and email to notify it.
+3. To run the program, just enter the command:
+
+    python auto-retrier.py
+
+4. Note that the auto-retrier is only support python3
