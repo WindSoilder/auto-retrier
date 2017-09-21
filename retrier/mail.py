@@ -1,3 +1,4 @@
+import socket
 from smtplib import SMTP
 from email.message import EmailMessage
 
@@ -15,7 +16,12 @@ def set_message(sender: str, receiver: str,
 
 def connect_smtp_server(smtp_server: str, port: int=25) -> SMTP:
     ''' connect to smtp server and return the relative object '''
-    return SMTP(host=smtp_server, port=port)
+    try:
+        smtp_server = SMTP(host=smtp_server, port=port)
+    except socket.gaierror as e:
+        raise ConnectionError(e.strerror)
+    else:
+        return smtp_server
 
 
 def login_smtp_server(smtp: SMTP, username: str, password: str) -> None:

@@ -6,7 +6,7 @@ from .mail import set_message, connect_smtp_server,\
     login_smtp_server
 
 
-def auto_retry(url: str, receiver: str):
+def auto_retry(url: str, receiver: str) -> bool:
     ''' try to fetch url until success, and send email to notify it '''
     DEFAULT_SUBJECT = 'Access success for {url}'.format(url=url)
     DEFAULT_CONTENT = '''
@@ -19,8 +19,11 @@ def auto_retry(url: str, receiver: str):
     except ConnectionRefusedError as e:
         logging.error('Connect to local smtp server failed '
                       'may be there is no smtp server here')
+        return False
     else:
         self_identify = 'auto-retrier@retrier.com'
         msg = set_message(self_identify, receiver,
                           DEFAULT_SUBJECT, DEFAULT_CONTENT)
         smtp_server.send_message(msg)
+        smtp_server.close()
+        return True

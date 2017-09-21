@@ -5,7 +5,7 @@ import requests
 from requests.exceptions import ConnectionError, Timeout, HTTPError
 
 
-def try_fetch_until_success(url: str, retry_times: int=0):
+def try_fetch_until_success(url: str, retry_times: int=0) -> bool:
     ''' try to fetch url forever, until fetch success '''
     MAX_RETRY_TIMES = 1000
 
@@ -13,10 +13,11 @@ def try_fetch_until_success(url: str, retry_times: int=0):
         logging.warn("try to max {retry} times,"
                      " but still can't access the page."
                      .format(retry=MAX_RETRY_TIMES))
-        return
+        return False
     try:
         response = requests.get(url)
         response.raise_for_status()
+        return True
     except (ConnectionError, Timeout) as e:
         # default every retry by 10 seconds
         time.sleep(10)
